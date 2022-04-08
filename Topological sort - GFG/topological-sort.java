@@ -59,50 +59,100 @@ class Main {
 
 class Solution
 {
-    static boolean dfs(int src, ArrayList<ArrayList<Integer>> graph, int[] vis, ArrayList<Integer> al)
+    //doing it with bfs
+    
+    static int[] topoSort(int V, ArrayList<ArrayList<Integer>> graph)
     {
-        vis[src] = 1;
-        for(int  nbr :graph.get(src))
+        int [] indegree = new int[V];
+        for (int u = 0 ; u < V ; u++)
         {
-            if(vis[nbr]==0)
-            {
-                boolean cycle = dfs(nbr,graph,vis,al);
-                if(cycle) return true;
-            } else if (vis[nbr]==1)
-            {
-                return true;
+            for (int v : graph.get(u)){
+                indegree[v]++;
             }
         }
-        vis[src]=2;
-        al.add(src);
-        return false;
-    }
-    //Function to return list containing vertices in Topological order. 
-    static int[] topoSort(int V, ArrayList<ArrayList<Integer>> adj) 
-    {
-        // add your code here
-        int[] vis = new int[V];
-        ArrayList<Integer> al = new ArrayList<>();
-        for (int i = 0 ; i < V ; i++)
+        LinkedList<Integer> que = new LinkedList<>();
+        ArrayList<Integer>topo = new ArrayList<>();
+        for(int i = 0 ; i < V ; i++)
         {
-            if(vis[i]==0)
+            if(indegree[i]==0)
             {
-                boolean cycle = dfs(i,adj,vis,al);
-                if(cycle)
-                {
-                    System.out.println("NO SOLUTION");
-                    return new int[]{};
-                }
+                que.addLast(i);
+                topo.add(i);
                 
             }
         }
-        int[] topo = new int[V];
-        int j = 0;
-        for (int i = al.size() -1 ; i>=0 ; i--)
+        
+        while(que.size()>0)
         {
-            topo[j] = al.get(i);
-            j++;
+            int u = que.removeFirst();
+            for (int v: graph.get(u))
+            {
+                indegree[v]--;
+                if(indegree[v]==0)
+                {
+                    que.addLast(v);
+                    topo.add(v);
+                }
+            }
         }
-        return topo;
+        int [] ans = new int [V];
+        for(int i = 0; i < V ; i++){
+            ans[i]=topo.get(i);
+        }
+        return ans;
+        
+        
     }
+    
+    
+    
+    //doing it with dfs
+    
+    
+    // static boolean dfs(int src, ArrayList<ArrayList<Integer>> graph, int[] vis, ArrayList<Integer> al)
+    // {
+    //     vis[src] = 1;
+    //     for(int  nbr :graph.get(src))
+    //     {
+    //         if(vis[nbr]==0)
+    //         {
+    //             boolean cycle = dfs(nbr,graph,vis,al);
+    //             if(cycle) return true;
+    //         } else if (vis[nbr]==1)
+    //         {
+    //             return true;
+    //         }
+    //     }
+    //     vis[src]=2;
+    //     al.add(src);
+    //     return false;
+    // }
+    // //Function to return list containing vertices in Topological order. 
+    // static int[] topoSort(int V, ArrayList<ArrayList<Integer>> adj) 
+    // {
+    //     // add your code here
+    //     int[] vis = new int[V];
+    //     ArrayList<Integer> al = new ArrayList<>();
+    //     for (int i = 0 ; i < V ; i++)
+    //     {
+    //         if(vis[i]==0)
+    //         {
+    //             boolean cycle = dfs(i,adj,vis,al);
+    //             if(cycle)
+    //             {
+    //                 System.out.println("NO SOLUTION");
+    //                 return new int[]{};
+    //             }
+                
+    //         }
+    //     }
+    //     int[] topo = new int[V];
+    //     int j = 0;
+    //     for (int i = al.size() -1 ; i>=0 ; i--)
+    //     {
+    //         topo[j] = al.get(i);
+    //         j++;
+    //     }
+    //     return topo;
+     //}
 }
