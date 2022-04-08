@@ -95,6 +95,10 @@ class Solution
                 }
             }
         }
+        if(topo.size()!=V)
+        {
+            System.out.println("Solution does not exist");
+        }
         int [] ans = new int [V];
         for(int i = 0; i < V ; i++){
             ans[i]=topo.get(i);
