@@ -31,6 +31,7 @@ class Solution {
             }
         }
         
+        
         if(stck.size()!=0)
         {
             return false;
